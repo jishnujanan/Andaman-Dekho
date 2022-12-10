@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Dio http = getDio();
     http
         .get(
-      "api/app/getCategory",
+      "https://us-central1-andaman-dekho.cloudfunctions.net/api/app/getCategory",
     )
         .then((resp) {
       setState(() {
@@ -254,6 +254,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         print(ind1);
                         return Column(
                           children: [
+                            SizedBox(
+                              height:
+                              setHeight(context, factor: 0.01),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,25 +285,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
                                                   categories[ind1]
-                                                      ['categoryImageLink']),
+                                                      ['categoryImageLink'],
+                                                ),
                                             ),
                                           ),
                                         ),
                                         SizedBox(
                                           height:
-                                              setHeight(context, factor: 0.005),
+                                              setHeight(context, factor: 0.01),
                                         ),
                                         SizedBox(
                                           width:
                                               setWidth(context, factor: 0.45),
-                                          child: Text(
-                                            categories[ind1]['categoryName'],
-                                            overflow: TextOverflow.fade,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: setColors.black
-                                                    .withOpacity(0.6),
-                                                fontWeight: FontWeight.bold),
+                                          child: Center(
+                                            child: Text(
+                                              categories[ind1]['categoryName'],
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: setColors.black
+                                                      .withOpacity(0.6),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                         ),
                                         SizedBox(
@@ -315,46 +322,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ),
                                 //Second Type in Same Row
                                 ind2 > categories.length - 1
-                                    ? ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                        child: InkWell(
-                                          onTap: () {},
-                                          child: Card(
-                                            color: setColors.body,
-                                            elevation: 0,
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: setHeight(context,
-                                                      factor: 0.2),
-                                                  width: setWidth(context,
-                                                      factor: 0.45),
-                                                  child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      child: const Text(" ")),
-                                                ),
-                                                const SizedBox(
-                                                  height: 4,
-                                                ),
-                                                Text(
-                                                  " ",
-                                                  style: TextStyle(
-                                                      color: setColors.black
-                                                          .withOpacity(0.8),
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
+                                    ? InkWell(
+                                      onTap: () {},
+                                      child: Card(
+                                        color: setColors.body,
+                                        elevation: 0,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: setHeight(context,
+                                                  factor: 0.17),
+                                              width: setWidth(context,
+                                                  factor: 0.44),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: const Text(" ")),
                                             ),
-                                          ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              " ",
+                                              style: TextStyle(
+                                                  color: setColors.black
+                                                      .withOpacity(0.8),
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            )
+                                          ],
                                         ),
-                                      )
+                                      ),
+                                    )
                                     : InkWell(
                                         onTap: () {
+                                          print(categories[ind2]['categoryName']);
                                           navigateToPlaceType(
                                               categories[ind2]['categoryName']);
                                         },
@@ -380,21 +383,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ),
                                               SizedBox(
                                                 height: setHeight(context,
-                                                    factor: 0.005),
+                                                    factor: 0.01),
                                               ),
                                               SizedBox(
                                                 width: setWidth(context,
                                                     factor: 0.45),
-                                                child: Text(
-                                                  categories[ind2]
-                                                      ['categoryName'],
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: setColors.black
-                                                          .withOpacity(0.6),
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                child: Center(
+                                                  child: Text(
+                                                    categories[ind2]
+                                                        ['categoryName'],
+                                                    overflow: TextOverflow.fade,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: setColors.black
+                                                            .withOpacity(0.6),
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
@@ -405,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           ),
                                           elevation: 0,
                                         ),
-                                  splashColor: setColors.white,
+                                        splashColor: setColors.white,
                                       ),
                               ],
                             ),

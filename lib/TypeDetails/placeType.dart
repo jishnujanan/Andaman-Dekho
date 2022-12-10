@@ -32,15 +32,17 @@ class _PlaceTypeState extends State<PlaceType> {
   @override
   void initState() {
     // TODO: implement initState
+    print(widget.placeType);
     super.initState();
     setCurrPos();
     Dio http = getDio();
     http
-        .get(
-      "api/place/getPlaceByCategory?category=" + widget.placeType,
+        .post(
+      http.options.baseUrl+"/place/getPlaceByCategory",
+      data: {"category":widget.placeType}
     )
         .then((resp) {
-      //print(resp.data);
+      print(resp.data);
       places = resp.data['message'];
 
       setState(() {
@@ -379,15 +381,15 @@ class _PlaceTypeState extends State<PlaceType> {
                                       borderRadius: BorderRadius.circular(10.0),
                                       child: SizedBox(
                                         height:
-                                            setHeight(context, factor: 0.15),
-                                        width: setHeight(context, factor: 0.15),
+                                            setHeight(context, factor: 0.20),
+                                        width: setHeight(context, factor: 0.20),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           child: Image.network(
                                             currSearchPlaces[index]
                                                 ['thumbnail'],
-                                            fit: BoxFit.fill,
+                                            fit: BoxFit.cover,
                                             loadingBuilder:
                                                 (BuildContext context,
                                                     Widget child,
@@ -406,117 +408,114 @@ class _PlaceTypeState extends State<PlaceType> {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width:setWidth(context,factor: 0.58),
-                                            child: Text(
-                                              currSearchPlaces[index]
-                                                  ['placeName'],
-                                              overflow: TextOverflow.visible,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width:setWidth(context,factor: 0.58),
+                                          child: Text(
+                                            currSearchPlaces[index]
+                                                ['placeName'],
+                                            overflow: TextOverflow.visible,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              setWidth(context, factor: 0.5),
+                                          child:Text(
+                                            currSearchPlaces[index]['description'].toString().substring(0,60)+"....",
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.directions_walk,
+                                              color: Colors.grey,
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              (Geolocator.distanceBetween(
+                                                              double.parse(
+                                                                  currSearchPlaces[
+                                                                          index][
+                                                                      'latitude']),
+                                                              double.parse(
+                                                                  currSearchPlaces[
+                                                                          index]
+                                                                      [
+                                                                      'longitude']),
+                                                              currPoss
+                                                                  .latitude,
+                                                              currPoss
+                                                                  .longitude) /
+                                                          1000)
+                                                      .roundToDouble()
+                                                      .toString() +
+                                                  " kms",
                                               style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                                  color: Colors.grey),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width:
-                                                setWidth(context, factor: 0.5),
-                                            child:Text(
-                                              currSearchPlaces[index]['description'].toString().substring(0,60)+"....",
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: const [
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 25.0,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.directions_walk,
-                                                color: Colors.grey,
-                                              ),
-                                              const SizedBox(
-                                                width: 4,
-                                              ),
-                                              Text(
-                                                (Geolocator.distanceBetween(
-                                                                double.parse(
-                                                                    currSearchPlaces[
-                                                                            index][
-                                                                        'latitude']),
-                                                                double.parse(
-                                                                    currSearchPlaces[
-                                                                            index]
-                                                                        [
-                                                                        'longitude']),
-                                                                currPoss
-                                                                    .latitude,
-                                                                currPoss
-                                                                    .longitude) /
-                                                            1000)
-                                                        .roundToDouble()
-                                                        .toString() +
-                                                    " kms",
-                                                style: const TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: const [
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.yellow,
-                                                size: 25.0,
-                                              ),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.yellow,
-                                                size: 25.0,
-                                              ),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.yellow,
-                                                size: 25.0,
-                                              ),
-                                              Icon(
-                                                Icons.star,
-                                                color: Colors.yellow,
-                                                size: 25.0,
-                                              ),
-                                              Icon(
-                                                Icons.star_half,
-                                                color: Colors.yellow,
-                                                size: 25.0,
-                                              ),
-                                            ],
-                                          )
-                                          // RatingBar.builder(
-                                          //   initialRating: 3,
-                                          //   minRating: 1,
-                                          //   direction: Axis.horizontal,
-                                          //   allowHalfRating: true,
-                                          //   itemCount: 5,
-                                          //
-                                          //   itemBuilder: (context, _) => Icon(
-                                          //     Icons.star,
-                                          //     color: Colors.amber,
-                                          //     size: 0.1,
-                                          //   ),
-                                          //   onRatingUpdate: (rating) {
-                                          //     print(rating);
-                                          //   },
-                                          // ),
-                                        ],
-                                      ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 25.0,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 25.0,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 25.0,
+                                            ),
+                                            Icon(
+                                              Icons.star_half,
+                                              color: Colors.yellow,
+                                              size: 25.0,
+                                            ),
+                                          ],
+                                        )
+                                        // RatingBar.builder(
+                                        //   initialRating: 3,
+                                        //   minRating: 1,
+                                        //   direction: Axis.horizontal,
+                                        //   allowHalfRating: true,
+                                        //   itemCount: 5,
+                                        //
+                                        //   itemBuilder: (context, _) => Icon(
+                                        //     Icons.star,
+                                        //     color: Colors.amber,
+                                        //     size: 0.1,
+                                        //   ),
+                                        //   onRatingUpdate: (rating) {
+                                        //     print(rating);
+                                        //   },
+                                        // ),
+                                      ],
                                     )
                                     // ClipRRect(
                                     //   borderRadius: BorderRadius.circular(10.0),
